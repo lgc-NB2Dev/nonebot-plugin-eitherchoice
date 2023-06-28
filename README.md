@@ -38,7 +38,9 @@ _✨ 让 AI 帮你对比两件事物 ✨_
 
 ## 📖 介绍
 
-接口来自 [EitherChoice](https://eitherchoice.com/)
+~~让 AI 帮你一本正经地胡说八道~~
+
+服务来自 [EitherChoice](https://eitherchoice.com/)
 
 ## 💿 安装
 
