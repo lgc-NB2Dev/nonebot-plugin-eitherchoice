@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-eitherchoice"
-version = "0.1.0"
+version = "0.1.0.post1"
 description = "Let AI help you compare two things."
 authors = [{ name = "student_2333", email = "lgc2333@126.com" }]
 dependencies = [
@@ -16,7 +16,7 @@ readme = "README.md"
 license = { text = "MIT" }
 
 [project.urls]
-homepage = "https://github.com/owner/nonebot-plugin-example"
+homepage = "https://github.com/lgc-NB2Dev/nonebot-plugin-eitherchoice"
 
 [tool.pdm.build]
 includes = []
