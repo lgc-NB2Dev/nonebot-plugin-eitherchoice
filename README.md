@@ -12,14 +12,14 @@
 
 # NoneBot-Plugin-EitherChoice
 
-_✨ 让 AI 帮你评价两件事物 ✨_
+_✨ 让 AI 帮你对比两件事物 ✨_
 
 <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
 <a href="https://pdm.fming.dev">
   <img src="https://img.shields.io/badge/pdm-managed-blueviolet" alt="pdm-managed">
 </a>
-<a href="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/f4778875-45a4-4688-8e1b-b8c844440abb">
-  <img src="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/f4778875-45a4-4688-8e1b-b8c844440abb.svg" alt="wakatime">
+<a href="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/aee0950c-6290-4b95-ab49-c0982bd7e27d">
+  <img src="https://wakatime.com/badge/user/b61b0f9a-f40b-4c82-bc51-0a75c67bfccf/project/aee0950c-6290-4b95-ab49-c0982bd7e27d.svg" alt="wakatime">
 </a>
 
 <br />
@@ -38,7 +38,7 @@ _✨ 让 AI 帮你评价两件事物 ✨_
 
 ## 📖 介绍
 
-这里是插件的详细介绍部分
+接口来自 [EitherChoice](https://eitherchoice.com/)
 
 ## 💿 安装
 
@@ -107,23 +107,29 @@ plugins = [
 
 在 nonebot2 项目的`.env`文件中添加下表中的必填配置
 
-|  配置项  | 必填 | 默认值 |   说明   |
-| :------: | :--: | :----: | :------: |
-| 配置项 1 |  是  |   无   | 配置说明 |
-| 配置项 2 |  否  |   无   | 配置说明 |
+|            配置项            | 必填 | 默认值  |               说明                |
+| :--------------------------: | :--: | :-----: | :-------------------------------: |
+|           `PROXY`            |  否  |   无    |        访问接口使用的代理         |
+|   `EITHER_CHOICE_TIMEOUT`    |  否  |  `90`   |       访问接口超时，单位秒        |
+|     `EITHER_CHOICE_LANG`     |  否  | `zh-CN` |             目标语言              |
+| `EITHER_CHOICE_ALLOW_PUBLIC` |  否  | `True`  |   是否允许 AI 上网搜索相关信息    |
+|  `EITHER_CHOICE_PIC_WIDTH`   |  否  | `1280`  |     生成图片的宽度，单位像素      |
+|  `EITHER_CHOICE_MAIN_FONT`   |  否  |   ...   |  生成图片的主字体，使用 CSS 格式  |
+|  `EITHER_CHOICE_CODE_FONT`   |  否  |   ...   | 生成图片的代码字体，使用 CSS 格式 |
 
 ## 🎉 使用
 
-### 指令表
+### 指令
 
-|  指令  | 权限 | 需要@ | 范围 |   说明   |
-| :----: | :--: | :---: | :--: | :------: |
-| 指令 1 | 主人 |  否   | 私聊 | 指令说明 |
-| 指令 2 | 群员 |  是   | 群聊 | 指令说明 |
+- 指令：对比 要顶的事物 和 要踩的事物
+- 别名：比较、比较一下、锐评、如何评价
+- 例：
+  - 对比 Python 和 JavaScript
+  - 比较一下 C# 和 Java
 
 ### 效果图
 
-如果有效果图的话
+![Alt text](https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/readme/eitherchoice/example.png)
 
 ## 📞 联系
 
@@ -134,7 +140,9 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 
 ## 💡 鸣谢
 
-如果有要鸣谢的人的话
+### [EitherChoice](https://eitherchoice.com/)
+
+- 服务提供
 
 ## 💰 赞助
 

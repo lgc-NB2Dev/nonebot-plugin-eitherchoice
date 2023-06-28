@@ -26,7 +26,11 @@ async def check_rule(state: T_State, arg: Message = CommandArg()) -> bool:
     return True
 
 
-cmd_choice = on_command("锐评", rule=check_rule, aliases={"如何评价", "比较", "比较一下"})
+cmd_choice = on_command(
+    "对比",
+    rule=check_rule,
+    aliases={"比较", "比较一下", "锐评", "如何评价"},
+)
 
 
 @cmd_choice.handle()

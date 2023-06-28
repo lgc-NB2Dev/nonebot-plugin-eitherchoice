@@ -32,4 +32,4 @@ jobs:
 
       - name: Build and Publish distribution 📦 to PyPI
         run: >-
-          python -m pdm publish -u "__token__" -P ${{ secrets.PYPI_API_TOKEN }}
+          python -m pdm publish
