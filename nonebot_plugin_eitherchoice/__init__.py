@@ -5,11 +5,11 @@ from .config import ConfigModel
 
 __version__ = "0.1.0"
 __plugin_meta__ = PluginMetadata(
-    name="nonebot-plugin-example",
-    description="插件模板",
-    usage="这是一个一个一个插件模板",
+    name="EitherChoice",
+    description="让 AI 帮你锐评两样东西",
+    usage="指令：choice <事物1> <事物2>\n如果参数中有空格，请用引号括起来",
     type="application",
-    homepage="https://github.com/lgc-NB2Dev/nonebot-plugin-example",
+    homepage="https://github.com/lgc-NB2Dev/nonebot-plugin-eitherchoice",
     config=ConfigModel,
     supported_adapters={"~onebot.v11"},
     extra={"License": "MIT", "Author": "student_2333"},
