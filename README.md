@@ -129,7 +129,7 @@ plugins = [
 
 ### 效果图
 
-![Alt text](https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/readme/eitherchoice/example.png)
+![Alt text](https://raw.githubusercontent.com/lgc-NB2Dev/readme/main/eitherchoice/example.png)
 
 ## 📞 联系
 
