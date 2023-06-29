@@ -116,7 +116,7 @@ plugins = [
 |    `EITHER_CHOICE_RETRY`     |  否  |   `2`   |                 访问接口最大重试次数                 |
 |     `EITHER_CHOICE_LANG`     |  否  | `zh-CN` |                       目标语言                       |
 | `EITHER_CHOICE_ALLOW_PUBLIC` |  否  | `True`  |             是否允许 AI 上网搜索相关信息             |
-|  `EITHER_CHOICE_PIC_WIDTH`   |  否  | `1280`  | 生成图片的宽度，单位像素（实际宽度可能是这里的一倍） |
+|  `EITHER_CHOICE_PIC_WIDTH`   |  否  | `1280`  | 生成图片的宽度，单位像素（实际宽度可能比这里大一倍） |
 |  `EITHER_CHOICE_MAIN_FONT`   |  否  |   ...   |           生成图片的主字体，使用 CSS 语法            |
 |  `EITHER_CHOICE_CODE_FONT`   |  否  |   ...   |          生成图片的代码字体，使用 CSS 语法           |
 
