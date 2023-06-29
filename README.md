@@ -12,7 +12,7 @@
 
 # NoneBot-Plugin-EitherChoice
 
-_✨ 让 AI 帮你对比两件事物 ✨_
+_✨ 让 AI 帮你~~锐评~~对比两件事物 ✨_
 
 <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="python">
 <a href="https://pdm.fming.dev">

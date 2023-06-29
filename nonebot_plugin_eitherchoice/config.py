@@ -1,14 +1,14 @@
 from typing import Optional
 
 from nonebot import get_driver
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 
 
 class ConfigModel(BaseModel):
     proxy: Optional[str] = None
     either_choice_timeout: int = 90
     either_choice_lang: str = "zh-CN"
-    either_choice_allow_public: bool = True
+    either_choice_allow_public: str = "true"
     either_choice_pic_width: int = 1280
     either_choice_main_font: str = (
         "'Microsoft YaHei UI', 'Microsoft YaHei', "
@@ -22,6 +22,13 @@ class ConfigModel(BaseModel):
         "'Cascadia Code', 'CascadiaCode Nerd Font', "
         "'Consolas', 'Courier New', monospace"
     )
+
+    @validator("either_choice_allow_public", pre=True)
+    def either_choice_allow_public_validator(cls, v):  # noqa: N805
+        v = str(v).lower()
+        if v in ("true", "false"):
+            return v
+        raise ValueError("`either_choice_allow_public` must be `true` or `false`")
 
 
 config: ConfigModel = ConfigModel.parse_obj(get_driver().config.dict())

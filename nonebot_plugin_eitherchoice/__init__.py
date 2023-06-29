@@ -7,7 +7,7 @@ require("nonebot_plugin_saa")
 from . import __main__ as __main__  # noqa: E402
 from .config import ConfigModel  # noqa: E402
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __plugin_meta__ = PluginMetadata(
     name="EitherChoice",
     description="让 AI 帮你对比两件事物",
