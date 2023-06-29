@@ -109,15 +109,16 @@ plugins = [
 
 在 nonebot2 项目的`.env`文件中添加下表中的必填配置
 
-|            配置项            | 必填 | 默认值  |               说明                |
-| :--------------------------: | :--: | :-----: | :-------------------------------: |
-|           `PROXY`            |  否  |   无    |        访问接口使用的代理         |
-|   `EITHER_CHOICE_TIMEOUT`    |  否  |  `90`   |       访问接口超时，单位秒        |
-|     `EITHER_CHOICE_LANG`     |  否  | `zh-CN` |             目标语言              |
-| `EITHER_CHOICE_ALLOW_PUBLIC` |  否  | `True`  |   是否允许 AI 上网搜索相关信息    |
-|  `EITHER_CHOICE_PIC_WIDTH`   |  否  | `1280`  |     生成图片的宽度，单位像素      |
-|  `EITHER_CHOICE_MAIN_FONT`   |  否  |   ...   |  生成图片的主字体，使用 CSS 格式  |
-|  `EITHER_CHOICE_CODE_FONT`   |  否  |   ...   | 生成图片的代码字体，使用 CSS 格式 |
+|            配置项            | 必填 | 默认值  |                         说明                         |
+| :--------------------------: | :--: | :-----: | :--------------------------------------------------: |
+|           `PROXY`            |  否  |   无    |                  访问接口使用的代理                  |
+|   `EITHER_CHOICE_TIMEOUT`    |  否  |  `90`   |                 访问接口超时，单位秒                 |
+|    `EITHER_CHOICE_RETRY`     |  否  |   `2`   |                 访问接口最大重试次数                 |
+|     `EITHER_CHOICE_LANG`     |  否  | `zh-CN` |                       目标语言                       |
+| `EITHER_CHOICE_ALLOW_PUBLIC` |  否  | `True`  |             是否允许 AI 上网搜索相关信息             |
+|  `EITHER_CHOICE_PIC_WIDTH`   |  否  | `1280`  | 生成图片的宽度，单位像素（实际宽度可能是这里的一倍） |
+|  `EITHER_CHOICE_MAIN_FONT`   |  否  |   ...   |           生成图片的主字体，使用 CSS 语法            |
+|  `EITHER_CHOICE_CODE_FONT`   |  否  |   ...   |          生成图片的代码字体，使用 CSS 语法           |
 
 ## 🎉 使用
 
@@ -160,4 +161,6 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 
 ## 📝 更新日志
 
-芝士刚刚发布的插件，还没有更新日志的说 qwq~
+## 0.1.1
+
+- 添加配置项 `EITHER_CHOICE_RETRY`，当访问接口出现问题时，将会自动重试

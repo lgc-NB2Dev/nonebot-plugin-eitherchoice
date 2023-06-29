@@ -7,6 +7,7 @@ from pydantic import BaseModel, validator
 class ConfigModel(BaseModel):
     proxy: Optional[str] = None
     either_choice_timeout: int = 90
+    either_choice_retry: int = 2
     either_choice_lang: str = "zh-CN"
     either_choice_allow_public: str = "true"
     either_choice_pic_width: int = 1280

@@ -129,7 +129,7 @@ async def get_choice_all(
     except Exception as e:
         if retry > 0:
             logger.opt(exception=e).warning(
-                "Failed to get choice, retrying ({retry} left)",
+                f"Failed to get choice, retrying ({retry} left)",
             )
             return await get_choice_all(thing_a, thing_b, retry, referer)
         raise
