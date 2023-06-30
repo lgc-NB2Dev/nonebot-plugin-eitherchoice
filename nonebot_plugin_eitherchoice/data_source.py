@@ -105,7 +105,7 @@ async def get_choice_stream(
     ) as client:
         async with client.stream(
             "POST",
-            "https://eitherchoice.com/api/prompt/dev",
+            "https://eitherchoice.com/api/prompt/ask",
             json=body,
         ) as stream:
             async for chunk in stream.aiter_text():

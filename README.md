@@ -40,6 +40,7 @@ _✨ 让 AI 帮你~~锐评~~对比两件事物 ✨_
 
 ~~让 AI 帮你一本正经地胡说八道~~
 
+灵感来自 [koishi-plugin-eitherchoice](https://www.npmjs.com/package/koishi-plugin-eitherchoice) ~~（电子蝈蝈，电子博弈，在线观看）~~  
 服务来自 [EitherChoice](https://eitherchoice.com/)
 
 ## 💿 安装
@@ -124,11 +125,12 @@ plugins = [
 
 ### 指令
 
-- 指令：对比 要顶的事物 和 要踩的事物
-- 别名：比较、比较一下、锐评、如何评价
+- 指令：对比(下/一下) 要顶的事物 和 要踩的事物
+- 别名：比较、锐评、评价、如何评价
 - 例：
   - 对比 Python 和 JavaScript
-  - 比较一下 C# 和 Java
+  - 锐评一下 C# 和 Java
+  - 比较 “下北泽” 和 东京 (加上引号防止 `下` 或 `一下` 被当做指令的一部分去除)
 
 ### 效果图
 
@@ -161,6 +163,11 @@ Telegram：[@lgc2333](https://t.me/lgc2333)
 
 ## 📝 更新日志
 
-## 0.1.1
+### 0.1.2
+
+- 修复由于 API 地址变动导致的显示 `[object Object]` 问题
+- 微调指令匹配方式
+
+### 0.1.1
 
 - 添加配置项 `EITHER_CHOICE_RETRY`，当访问接口出现问题时，将会自动重试
