@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-eitherchoice"
-version = "0.1.2"
+version = "0.1.2.post1"
 description = "Let AI help you compare two things."
 authors = [{ name = "student_2333", email = "lgc2333@126.com" }]
 dependencies = [
