@@ -12,11 +12,11 @@ __plugin_meta__ = PluginMetadata(
     name="EitherChoice",
     description="让 AI 帮你对比两件事物",
     usage=(
-        "▶ 指令：对比(下/一下) 要顶的事物 和 要踩的事物"
-        "▶ 别名：比较、锐评、评价、如何评价"
-        "▶ 示例："
-        "    ▷ 对比 Python 和 JavaScript"
-        "    ▷ 锐评一下 C# 和 Java"
+        "▶ 指令：对比(下/一下) 要顶的事物 和 要踩的事物\n"
+        "▶ 别名：比较、锐评、评价、如何评价\n"
+        "▶ 示例：\n"
+        "    ▷ 对比 Python 和 JavaScript\n"
+        "    ▷ 锐评一下 C# 和 Java\n"
         "    ▷ 比较 “下北泽” 和 东京 (加上引号防止 `下` 或 `一下` 被当做指令的一部分去除)"
     ),
     type="application",
