@@ -2,59 +2,57 @@ import string
 from typing import Tuple
 
 from nonebot import logger, on_command
-from nonebot.internal.adapter import Message
-from nonebot.internal.matcher import Matcher
+from nonebot.adapters import Message
 from nonebot.params import CommandArg
 from nonebot.typing import T_State
 from nonebot_plugin_saa import Image, MessageFactory
 
 from .data_source import get_choice_pic
 
+CMD_PREFIX = ("对比", "比较", "锐评", "评价", "如何评价")
+CMD_SUFFIX = ("下", "一下")
+COMMANDS = CMD_PREFIX + tuple(f"{x}{y}" for x in CMD_PREFIX for y in CMD_SUFFIX)
+
+SEP_CHARS = ("和", "与", "and", "vs", "&")
+SEP_CHARS = tuple(f" {x}" for x in SEP_CHARS) + SEP_CHARS
 STRIP_CHARS = "'\"“”‘’"
-ARG_PREFIX = ("下", "一下")
-
-
-def strip_prefix(s: str) -> str:
-    for p in ARG_PREFIX:
-        if s.startswith(p):
-            return s[len(p) :]
-    return s
 
 
 async def check_rule(state: T_State, arg: Message = CommandArg()) -> bool:
     arg_str = arg.extract_plain_text()
-
-    if arg_str.count("和") != 1:
+    sep = next((x for x in SEP_CHARS if x in arg_str), None)
+    if not sep:
         return False
 
-    ta, tb = arg_str.split("和")
-    ta = strip_prefix(ta.strip()).strip(STRIP_CHARS)
-    tb = tb.strip(string.whitespace + STRIP_CHARS)
-    if not (ta and tb):
+    things = tuple(
+        x.strip(string.whitespace + STRIP_CHARS) for x in arg_str.split(sep, 1)
+    )
+    if len(things) != 2 or (not all(things)):
         return False
 
-    state["things"] = ta, tb
+    state["things"] = things
     return True
 
 
-cmd_choice = on_command(
-    "对比",
-    rule=check_rule,
-    aliases={"比较", "锐评", "评价", "如何评价"},
-)
+first_cmd, *other_cmd = COMMANDS
+cmd_choice = on_command(first_cmd, aliases=set(other_cmd), rule=check_rule)
 
 
 @cmd_choice.handle()
-async def _(matcher: Matcher, state: T_State):
+async def _(state: T_State):
     things: Tuple[str, str] = state["things"]
-    # await matcher.finish(f"Things: {things}")
 
-    await matcher.send("请稍等，AI 正在帮你评价...")
+    tip_receipt = await MessageFactory("请稍等，AI 正在帮你评价...").send()
+
     try:
         pic = await get_choice_pic(*things)
     except Exception:
         logger.exception("发生错误")
-        logger.error("如果多次发生 Server disconnected 错误，请尝试增加 retry 次数")
-        await matcher.finish("发生错误，请检查后台日志")
-
-    await MessageFactory(Image(pic)).finish()
+        await MessageFactory("发生错误，请稍后重试……").send(reply=True)
+    else:
+        await MessageFactory(Image(pic)).send(reply=True)
+    finally:
+        try:
+            await tip_receipt.revoke()
+        except Exception as e:
+            logger.warning(f"撤回提示消息失败：{e!r}")

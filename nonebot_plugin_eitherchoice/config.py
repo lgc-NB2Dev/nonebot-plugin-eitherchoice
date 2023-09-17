@@ -6,10 +6,11 @@ from pydantic import BaseModel, validator
 
 class ConfigModel(BaseModel):
     proxy: Optional[str] = None
-    either_choice_timeout: int = 90
+    either_choice_timeout: Optional[int] = None
     either_choice_retry: int = 2
     either_choice_lang: str = "zh-CN"
     either_choice_allow_public: str = "true"
+    either_choice_force_ask: bool = True
     either_choice_pic_width: int = 1280
     either_choice_main_font: str = (
         "'Microsoft YaHei UI', 'Microsoft YaHei', "
@@ -17,8 +18,8 @@ class ConfigModel(BaseModel):
         "'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif"
     )
     either_choice_code_font: str = (
-        "'Victor Mono', 'VictorMono Nerd Font', "
         "'JetBrains Mono', 'JetBrainsMono Nerd Font', "
+        "'Victor Mono', 'VictorMono Nerd Font', "
         "'Fira Code', 'FiraCode Nerd Font', "
         "'Cascadia Code', 'CascadiaCode Nerd Font', "
         "'Consolas', 'Courier New', monospace"

@@ -1,10 +1,10 @@
 import time
 import urllib.parse
 from pathlib import Path
-from typing import AsyncIterator, Optional
+from typing import Optional
 
 import jinja2
-import markdown
+from bs4 import BeautifulSoup, Tag
 from httpx import AsyncClient
 from nonebot import logger
 from nonebot_plugin_htmlrender.data_source import get_new_page, read_tpl
@@ -14,21 +14,19 @@ from .config import config
 RES_PATH = Path(__file__).parent / "res"
 HTML_TEMPLATE = jinja2.Template((RES_PATH / "template.html.jinja").read_text("u8"))
 
+TEMPLATE_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/114.0.0.0 "
+        "Safari/537.36"
+    ),
+    "Origin": "https://eitherchoice.com",
+    "Cookie": "ec_ask=1",
+}
+
 
 async def render_image(thing_a: str, thing_b: str, content: str) -> bytes:
-    parsed_md = markdown.markdown(
-        content,
-        extensions=[
-            "pymdownx.tasklist",
-            "tables",
-            "fenced_code",
-            "codehilite",
-            "mdx_math",
-            "pymdownx.tilde",
-        ],
-        extension_configs={"mdx_math": {"enable_dollar_delimiter": True}},
-    )
-
     katex_js = await read_tpl("katex/katex.min.js")
     mathtex_js = await read_tpl("katex/mathtex-script-type.min.js")
     extra = f"<script defer>{katex_js}</script><script defer>{mathtex_js}</script>"
@@ -46,7 +44,7 @@ async def render_image(thing_a: str, thing_b: str, content: str) -> bytes:
         code_font=config.either_choice_code_font,
         a=thing_a,
         b=thing_b,
-        table=parsed_md,
+        table=content,
         extra=extra,
     )
 
@@ -72,24 +70,47 @@ def build_referer(thing_a: str, thing_b: str) -> str:
     )
 
 
-async def get_choice_stream(
+async def get_from_page(
     thing_a: str,
     thing_b: str,
     referer: Optional[str] = None,
-) -> AsyncIterator[str]:
-    if not referer:
-        referer = build_referer(thing_a, thing_b)
+) -> str:
+    headers = TEMPLATE_HEADERS.copy()
+    if referer:
+        headers["Referer"] = referer
 
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/114.0.0.0 "
-            "Safari/537.36"
-        ),
-        "Origin": "https://eitherchoice.com",
-        "Referer": referer,
-    }
+    async with AsyncClient(
+        http2=True,
+        timeout=config.either_choice_timeout,
+        proxies=config.proxy,
+    ) as client:
+        resp = await client.get(
+            f"https://eitherchoice.com/fight/{url_enc(thing_a)}-vs-{url_enc(thing_b)}",
+            follow_redirects=False,
+        )
+        resp.raise_for_status()
+        text = resp.text
+
+    logger.debug(text)
+    soup = BeautifulSoup(text, "lxml")
+    main = soup.find("main")
+    assert isinstance(main, Tag), "main tag not found, or it is not a tag"
+
+    elements = list(main.children)[3:-3]  # 第四个到倒数第四个，剃掉标题和脚注
+    assert len(elements), "no elements found"
+
+    return "\n".join(str(x) for x in elements)
+
+
+async def ask_choice(
+    thing_a: str,
+    thing_b: str,
+    referer: Optional[str] = None,
+):
+    headers = TEMPLATE_HEADERS.copy()
+    if referer:
+        headers["Referer"] = referer
+
     body = {
         "A": thing_a,
         "B": thing_b,
@@ -97,43 +118,47 @@ async def get_choice_stream(
         "lang": config.either_choice_lang,
     }
 
-    async with AsyncClient(  # noqa: SIM117
+    async with AsyncClient(
+        http2=True,
         timeout=config.either_choice_timeout,
         proxies=config.proxy,
-        http2=True,
         headers=headers,
     ) as client:
-        async with client.stream(
-            "POST",
-            "https://eitherchoice.com/api/prompt/ask",
-            json=body,
-        ) as stream:
-            async for chunk in stream.aiter_text():
-                yield chunk
+        resp = await client.post("https://eitherchoice.com/api/prompt/ask", json=body)
+        if resp.status_code != 524:  # server timeout
+            resp.raise_for_status()
+        else:
+            logger.warning(
+                "Server timeout! Maybe the content is not completely generated...",
+            )
 
 
-async def get_choice_all(
-    thing_a: str,
-    thing_b: str,
-    retry: int = 2,
-    referer: Optional[str] = None,
-) -> str:
-    retry -= 1
+async def get_choice(thing_a: str, thing_b: str) -> str:
+    if not config.either_choice_force_ask:
+        try:
+            return await get_from_page(thing_a, thing_b)
+        except Exception as e:
+            logger.info(f"Fight page may not exist, asking now: {e!r}")
 
-    if not referer:
-        referer = build_referer(thing_a, thing_b)
+    referer = build_referer(thing_a, thing_b)
     logger.info(f"Referer: {referer}")
 
-    try:
-        return "".join([i async for i in get_choice_stream(thing_a, thing_b, referer)])
-    except Exception as e:
-        if retry > 0:
-            logger.opt(exception=e).warning(
-                f"Failed to get choice, retrying ({retry} left)",
+    # 这傻逼玩意真他妈头疼，搞了半天都没搞清楚这玩意的破逻辑，
+    # 不搞了，我急了，摆烂！主打一个能用就行！
+    for i in range(config.either_choice_retry + 1):
+        try:
+            await ask_choice(thing_a, thing_b, referer)
+            return await get_from_page(thing_a, thing_b, referer)
+        except Exception as e:
+            if i == config.either_choice_retry:
+                raise
+            logger.warning(
+                f"Failed to ask or failed to get content! "
+                f"retrying ({config.either_choice_retry - i} left): {e!r}",
             )
-            return await get_choice_all(thing_a, thing_b, retry, referer)
-        raise
+
+    raise ValueError
 
 
 async def get_choice_pic(thing_a: str, thing_b: str) -> bytes:
-    return await render_image(thing_a, thing_b, await get_choice_all(thing_a, thing_b))
+    return await render_image(thing_a, thing_b, await get_choice(thing_a, thing_b))
