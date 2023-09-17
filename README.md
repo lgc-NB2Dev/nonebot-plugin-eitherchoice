@@ -113,7 +113,7 @@ plugins = [
 |            配置项            | 必填 | 默认值  |                         说明                         |
 | :--------------------------: | :--: | :-----: | :--------------------------------------------------: |
 |           `PROXY`            |  否  |   无    |                  访问接口使用的代理                  |
-|   `EITHER_CHOICE_TIMEOUT`    |  否  |  `180`  |  访问接口超时，单位秒，可以设置为 `None` 以禁用超时  |
+|   `EITHER_CHOICE_TIMEOUT`    |  否  |  `None` |  访问接口超时，单位秒，可以设置为 `None` 以禁用超时  |
 |    `EITHER_CHOICE_RETRY`     |  否  |   `2`   |                 访问接口最大重试次数                 |
 |     `EITHER_CHOICE_LANG`     |  否  | `zh-CN` |                       目标语言                       |
 | `EITHER_CHOICE_ALLOW_PUBLIC` |  否  | `True`  |             是否允许 AI 上网搜索相关信息             |
