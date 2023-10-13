@@ -1,5 +1,5 @@
 from nonebot import require
-from nonebot.plugin import PluginMetadata
+from nonebot.plugin import PluginMetadata, inherit_supported_adapters
 
 require("nonebot_plugin_htmlrender")
 require("nonebot_plugin_saa")
@@ -7,7 +7,7 @@ require("nonebot_plugin_saa")
 from . import __main__ as __main__  # noqa: E402
 from .config import ConfigModel  # noqa: E402
 
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 __plugin_meta__ = PluginMetadata(
     name="EitherChoice",
     description="让 AI 帮你对比两件事物",
@@ -21,14 +21,6 @@ __plugin_meta__ = PluginMetadata(
     type="application",
     homepage="https://github.com/lgc-NB2Dev/nonebot-plugin-eitherchoice",
     config=ConfigModel,
-    supported_adapters={
-        "~onebot.v11",
-        "~onebot.v12",
-        "~kaiheila",
-        "~qqguild",
-        "~telegram",
-        "~feishu",
-        "~red",
-    },
+    supported_adapters=inherit_supported_adapters("nonebot_plugin_saa"),
     extra={"License": "MIT", "Author": "student_2333"},
 )
