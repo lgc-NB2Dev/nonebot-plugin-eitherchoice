@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from nonebot import get_driver
 from pydantic import BaseModel, validator
@@ -26,7 +26,7 @@ class ConfigModel(BaseModel):
     )
 
     @validator("either_choice_allow_public", pre=True)
-    def either_choice_allow_public_validator(cls, v):  # noqa: N805
+    def either_choice_allow_public_validator(cls, v: Any):  # noqa: N805
         v = str(v).lower()
         if v in ("true", "false"):
             return v
