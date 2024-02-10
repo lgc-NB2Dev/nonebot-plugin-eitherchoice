@@ -4,15 +4,15 @@ version = "0.2.0.post1"
 description = "Let AI help you compare two things."
 authors = [{ name = "student_2333", email = "lgc2333@126.com" }]
 dependencies = [
-    "nonebot2>=2.1.1",
+    "nonebot2>=2.2.0",
     "nonebot-plugin-htmlrender>=0.2.1",
     "nonebot-plugin-send-anything-anywhere>=0.3.2",
-    "pydantic>=1.10.4",
+    "pydantic>=1.10.0,<2",  
     "httpx[http2]>=0.24.1",
     "beautifulsoup4>=4.12.2",
     "lxml>=4.9.3",
 ]
-requires-python = ">=3.8,<4.0"
+requires-python = ">=3.9,<4.0"
 readme = "README.md"
 license = { text = "MIT" }
 
